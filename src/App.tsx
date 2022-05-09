@@ -73,7 +73,7 @@ function App() {
 
         setCount((prevCount) => prevCount + 1);
         setArrNum(newArr);
-      }, 500);
+      }, 2300);
 
       intervalRef.current = intervalId;
     }
@@ -96,7 +96,6 @@ function App() {
       setHistory([]);
       setNumber(0);
       clearInterval(intervalRef.current);
-      playsound("reset");
     }
   };
 
@@ -179,17 +178,15 @@ function App() {
             >
               {/* CONTROLLS */}
               <HStack spacing={4} justifyContent="center">
-                {!isStart ? (
-                  <Button
-                    colorScheme="red"
-                    onClick={handleStartClick}
-                    padding={["2rem", "2.3rem", "2.8rem"]}
-                    fontSize={["4xl", "5xl", "6xl"]}
-                  >
-                    <Icon as={FaPlay} color="yellow.300" />
-                  </Button>
-                ) : (
-                  <>
+                <Button
+                  colorScheme="red"
+                  onClick={handleStartClick}
+                  padding={["2rem", "2.3rem", "2.8rem"]}
+                  fontSize={["4xl", "5xl", "6xl"]}
+                >
+                  <Icon as={FaPlay} color="yellow.300" />
+                </Button>
+                {isStart ? (
                     <Button
                       colorScheme="red"
                       onClick={handleStopClick}
@@ -198,6 +195,8 @@ function App() {
                     >
                       <Icon as={FaStop} color="yellow.300" />
                     </Button>
+                ) : (
+                  <>
                     <Button
                       colorScheme="red"
                       onClick={handleResetClick}
