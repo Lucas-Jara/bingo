@@ -1,19 +1,6 @@
-import {
-  Box,
-  Button,
-  Center,
-  Grid,
-  GridItem,
-  HStack,
-  Icon,
-  Text,
-  VStack,
-} from "@chakra-ui/react";
 import { useRef, useState } from "react";
 
-import { FaPlay, FaRedo, FaStop } from "react-icons/fa";
-
-function App() {
+const Home = () => {
   const initialState = Object.fromEntries(
     Array.from({ length: 90 }, (_, i) => [i + 1, false])
   );
@@ -25,7 +12,6 @@ function App() {
   const [isStart, setIsStart] = useState(false);
   const [history, setHistory] = useState<number[]>([]);
   const [number, setNumber] = useState(0);
-  const [isSoundPlay, setIsSoundPlay] = useState(false);
 
   const getRandomNum = (): number => {
     const num = arrNum[Math.floor(Math.random() * arrNum.length)];
@@ -38,7 +24,7 @@ function App() {
     audio.play();
   };
 
-  const intervalRef = useRef(0);
+  const intervalRef = useRef<number>(0);
 
   const printNumbers = (num: number) => {
     setNumbers((prevState) => ({ ...prevState, [num]: true }));
@@ -62,7 +48,7 @@ function App() {
     if (!isStart) {
       playsound("start");
       setIsStart(true);
-      const intervalId = setInterval(() => {
+      const intervalId: number = setInterval(() => {
         const num = getRandomNum();
         printNumbers(num);
         playsound(num);
@@ -74,15 +60,14 @@ function App() {
         setCount((prevCount) => prevCount + 1);
         setArrNum(newArr);
       }, 2300);
-
       intervalRef.current = intervalId;
     }
   };
 
   const handleStopClick = () => {
     if (isStart) {
-      playsound("stop");
       clearInterval(intervalRef.current);
+      playsound("stop");
       setIsStart(false);
     }
   };
@@ -100,208 +85,103 @@ function App() {
   };
 
   return (
-    <Center minH="100vh" w="full">
-      <Box
-        width={["90%", "90%", "700px"]}
-        p={[".6rem", "1rem"]}
-        bg="red.600"
-        rounded="2xl"
-      >
-        <VStack alignItems="stretch" spacing={3}>
-          <HStack
-            bg="yellow.300"
-            height={["160px", "190px", "230px"]}
-            justifyContent="space-between"
-            alignItems="center"
-            rounded="2xl"
-            overflow="hidden"
-            spacing={2}
-            padding={2}
-          >
-            <VStack
-              width={["35%", "35%", "40%"]}
-              textAlign="center"
-              alignItems="center"
-            >
-              {number ? (
-                <>
-                  <HStack
-                    bg="white"
-                    boxShadow="md"
-                    rounded="full"
-                    w={["100px", "120px", "150px"]}
-                    h={["100px", "120px", "150px"]}
-                    shadow="xl"
-                    justifyContent="center"
+    <div className="flex justify-center items-center min-h-screen">
+      <div className="flex flex-col gap-4 w-11/12 sm:w-96 bg-red-700 rounded-lg p-4">
+        <div className="w-full bg-yellow-400 rounded-lg overflow-hidden">
+          <div className="flex p-4 gap-2">
+            <div className="flex flex-col justify-center items-center">
+              <div className="w-20 h-20 bg-white p-3 rounded-full">
+                <div className="w-14 h-14 bg-blue-400 p-2 rounded-full">
+                  <div className="w-10 h-10 bg-white rounded-full flex items-center justify-center">
+                    <h3 className="text-2xl font-bold">{number}</h3>
+                  </div>
+                </div>
+              </div>
+              <div className="flex flex-col items-center">
+                <p className="text-md font-bold">BOLA:</p>
+                <p className="-mt-1 text-md font-bold">{count} / 90</p>
+              </div>
+            </div>
+            <div className="flex-1 overflow-hidden">
+              <div className="flex max-w-prose flex-col">
+                <div className="flex justify-around">
+                  <div
+                    onClick={handleStartClick}
+                    className="cursor-pointer select-none flex w-14 h-14 justify-center py-2 bg-red-700 rounded-md transition-all duration-75 border-b-4 border-r-4 border-red-800 active:translate-y-1 active:border-none"
                   >
-                    <Box
-                      outline={[
-                        "8px solid #4299e1",
-                        "9px solid #4299e1",
-                        "10px solid #4299e1",
-                      ]}
-                      rounded="full"
-                      w={["65px", "85px", "105px"]}
-                      h={["65px", "85px", "105px"]}
-                      padding={[".2rem", ".6rem", "1rem"]}
-                    >
-                      <Text
-                        textAlign="center"
-                        fontSize={["4xl", "5xl", "6xl"]}
-                        fontWeight={600}
-                        lineHeight={[1.8, 1.6, 1.4]}
-                      >
-                        {number}
-                      </Text>
-                    </Box>
-                  </HStack>
-                  <Text fontSize={["lg", "xl", "2xl"]} fontWeight={600}>
-                    BOLA: {count} / 90
-                  </Text>
-                </>
-              ) : (
-                <Box
-                  w={["100px", "120px", "150px"]}
-                  h={["100px", "120px", "150px"]}
-                >
-                  <Text fontSize={["2xl", "3xl"]} fontWeight={600}>
-                    Press Play
-                  </Text>
-                </Box>
-              )}
-            </VStack>
-            <VStack
-              flex={1}
-              alignItems="stretch"
-              justifyContent="space-around"
-              height="full"
-            >
-              {/* CONTROLLS */}
-              <HStack spacing={4} justifyContent="center">
-                <Button
-                  colorScheme="red"
-                  onClick={handleStartClick}
-                  padding={["2rem", "2.3rem", "2.8rem"]}
-                  fontSize={["4xl", "5xl", "6xl"]}
-                >
-                  <Icon as={FaPlay} color="yellow.300" />
-                </Button>
-                {isStart ? (
-                    <Button
-                      colorScheme="red"
-                      onClick={handleStopClick}
-                      padding={["2rem", "2.3rem", "2.8rem"]}
-                      fontSize={["4xl", "5xl", "6xl"]}
-                    >
-                      <Icon as={FaStop} color="yellow.300" />
-                    </Button>
-                ) : (
-                  <>
-                    <Button
-                      colorScheme="red"
+                    play
+                  </div>
+                  <div
+                    onClick={handleStopClick}
+                    className="cursor-pointer select-none flex w-14 h-14 justify-center py-2 bg-red-700 rounded-md transition-all duration-75 border-b-4 border-r-4 border-red-800 active:translate-y-1 active:border-none"
+                  >
+                    stop
+                  </div>
+                  {!isStart && (
+                    <div
                       onClick={handleResetClick}
-                      padding={["2rem", "2.3rem", "2.8rem"]}
-                      fontSize={["4xl", "5xl", "6xl"]}
+                      className="cursor-pointer select-none flex w-14 h-14 justify-center py-2 bg-red-700 rounded-md transition-all duration-75 border-b-4 border-r-4 border-red-800 active:translate-y-1 active:border-none"
                     >
-                      <Icon as={FaRedo} color="yellow.300" />
-                    </Button>
-                  </>
-                )}
-              </HStack>
-              {/* HISTORY */}
-              <HStack
-                spacing={[1, 1.5, 2]}
-                overflowX="scroll"
-                height="55px"
-                width="380px"
-                p=".3rem"
-                bg="red.600"
-                rounded="md"
-              >
-                {history.map((num) => (
-                  <HStack
-                    key={num}
-                    boxSizing="content-box"
-                    padding={[0.5, 1]}
-                    bg="white"
-                    boxShadow="md"
-                    rounded="full"
-                    w={["25px", "30px", "50px"]}
-                    h={["25px", "30px", "50px"]}
-                    shadow="xl"
-                  >
-                    <Box
-                      outline={["3px solid #4299e1", "4px solid #4299e1"]}
-                      margin="0 auto"
-                      rounded="full"
-                      w={["25px", "30px", "40px"]}
-                      h={["25px", "30px", "40px"]}
-                      padding={[0.4, 0.8, 1]}
-                    >
-                      <Text
-                        textAlign="center"
-                        fontSize={["md", "xl", "2xl"]}
-                        fontWeight={600}
+                      reset
+                    </div>
+                  )}
+                </div>
+                <div className="mt-4 h-14  bg-red-700 rounded-md">
+                  <div className="h-full px-1 flex items-center overflow-x-auto gap-1">
+                    {history.map((num) => (
+                      <div
+                        key={num}
+                        className="w-10 h-10 bg-white p-1 rounded-full"
                       >
-                        {num}
-                      </Text>
-                    </Box>
-                  </HStack>
-                ))}
-              </HStack>
-            </VStack>
-          </HStack>
-          <Box bg="yellow.300" rounded="xl" p={[2, 2]}>
-            <Grid
-              templateColumns="repeat(9, 1fr)"
-              gap={[1.5, 2]}
-              overflow="hidden"
-            >
-              {Object.keys(numbers).map((number) => (
-                <GridItem
-                  key={number}
-                  display="flex"
-                  justifyContent="center"
-                  alignItems="center"
-                >
-                  <HStack
-                    boxSizing="content-box"
-                    bg={numbers[number] ? "#4299e1" : "white"}
-                    justifyContent="center"
-                    boxShadow="lg"
-                    padding={[1, 1.5, 2]}
-                    rounded="full"
+                        <div className="w-8 h-8 bg-blue-400 p-1 rounded-full">
+                          <div className="w-6 h-6  bg-white rounded-full flex items-center justify-center">
+                            <h3 className="text-md font-bold">{num}</h3>
+                          </div>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div className=" bg-yellow-400 rounded-lg">
+          <div className="p-1 grid grid-cols-9 gap-x-1 gap-y-2">
+            {Object.keys(numbers).map((number) => {
+              if (numbers[number]) {
+                return (
+                  <div
+                    key={number}
+                    className="flex justify-center items-center"
                   >
-                    <Box
-                      margin="0 auto"
-                      rounded="full"
-                      w={["25px", "28px", "40px"]}
-                      h={["25px", "28px", "40px"]}
-                      padding={[0.5]}
-                      outline={[
-                        "2.5px solid #4299e1",
-                        "3px solid #4299e1",
-                        "4px solid #4299e1",
-                      ]}
-                    >
-                      <Text
-                        textAlign="center"
-                        fontSize={["md", "xl", "2xl"]}
-                        fontWeight="bold"
-                        lineHeight={[1.6, 1.4, 1.6]}
-                      >
-                        {number}
-                      </Text>
-                    </Box>
-                  </HStack>
-                </GridItem>
-              ))}
-            </Grid>
-          </Box>
-        </VStack>
-      </Box>
-    </Center>
+                    <div className="w-8 h-8 bg-blue-400 p-1 rounded-full">
+                      <div className="w-6 h-6 bg-blue-400 p-1 rounded-full">
+                        <div className="w-4 h-4  bg-blue-400 rounded-full flex items-center justify-center">
+                          <h3 className="text-sm font-bold">{number}</h3>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                );
+              }
+              return (
+                <div key={number} className="flex justify-center items-center">
+                  <div className="w-8 h-8 bg-white p-1 rounded-full">
+                    <div className="w-6 h-6 bg-blue-400 p-1 rounded-full">
+                      <div className="w-4 h-4  bg-white rounded-full flex items-center justify-center">
+                        <h3 className="text-sm font-medium">{number}</h3>
+                      </div>
+                    </div>
+                  </div>
+                </div>
+              );
+            })}
+          </div>
+        </div>
+      </div>
+    </div>
   );
-}
+};
 
-export default App;
+export default Home;
