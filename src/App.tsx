@@ -1,5 +1,8 @@
 import { useRef, useState } from "react";
 
+// Icons
+import { FaPlay, FaStop, FaPause } from "react-icons/fa";
+
 const Home = () => {
   const initialState = Object.fromEntries(
     Array.from({ length: 90 }, (_, i) => [i + 1, false])
@@ -109,20 +112,26 @@ const Home = () => {
                     onClick={handleStartClick}
                     className="cursor-pointer select-none flex w-14 h-14 justify-center py-2 bg-red-700 rounded-md transition-all duration-75 border-b-4 border-r-4 border-red-800 active:translate-y-1 active:border-none"
                   >
-                    play
+                    <div className="flex justify-center items-center text-yellow-400 text-4xl">
+                      <FaPlay />
+                    </div>
                   </div>
                   <div
                     onClick={handleStopClick}
                     className="cursor-pointer select-none flex w-14 h-14 justify-center py-2 bg-red-700 rounded-md transition-all duration-75 border-b-4 border-r-4 border-red-800 active:translate-y-1 active:border-none"
                   >
-                    stop
+                    <div className="flex justify-center items-center text-yellow-400 text-4xl">
+                      <FaPause />
+                    </div>
                   </div>
                   {!isStart && (
                     <div
                       onClick={handleResetClick}
                       className="cursor-pointer select-none flex w-14 h-14 justify-center py-2 bg-red-700 rounded-md transition-all duration-75 border-b-4 border-r-4 border-red-800 active:translate-y-1 active:border-none"
                     >
-                      reset
+                      <div className="flex justify-center items-center text-yellow-400 text-4xl">
+                        <FaStop />
+                      </div>
                     </div>
                   )}
                 </div>
